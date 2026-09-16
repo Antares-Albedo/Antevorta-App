@@ -1,0 +1,117 @@
+{
+  "exemples": [
+    {
+      "nom": "Exemple 1 : épargne prudente fonds euros et UC",
+      "montant_initial": 50000,
+      "duree_annees": 10,
+      "date_souscription": "2026-01-01",
+      "frais_versement": 0.02,
+      "situation_couple": false,
+      "primes_autres_contrats": 0,
+      "supports": [
+        {
+          "identifiant": "FE",
+          "libelle": "Fonds en euros",
+          "type": "fonds_euros",
+          "allocation": 0.7,
+          "parametres": {"taux_base": 0.028, "tendance": "baisse", "variation_annuelle": 0.001, "taux_plancher": 0.015, "frais_gestion": 0.006}
+        },
+        {
+          "identifiant": "UC_MONDE",
+          "libelle": "UC actions internationales",
+          "type": "uc",
+          "allocation": 0.3,
+          "parametres": {"rendement_moyen": 0.06, "volatilite": 0.16, "frais_gestion": 0.009}
+        }
+      ],
+      "versements_programmes": [
+        {"montant": 300, "periodicite": "mensuelle", "indexation": 0.02}
+      ],
+      "versements_complementaires": [],
+      "rachats_programmes": []
+    },
+    {
+      "nom": "Exemple 2 : dirigeant avec produit structuré",
+      "montant_initial": 200000,
+      "duree_annees": 12,
+      "date_souscription": "2026-01-01",
+      "frais_versement": 0.01,
+      "situation_couple": true,
+      "primes_autres_contrats": 0,
+      "supports": [
+        {
+          "identifiant": "FE",
+          "libelle": "Fonds en euros",
+          "type": "fonds_euros",
+          "allocation": 0.4,
+          "parametres": {"taux_base": 0.03, "frais_gestion": 0.006}
+        },
+        {
+          "identifiant": "UC_DIV",
+          "libelle": "UC diversifiée",
+          "type": "uc",
+          "allocation": 0.3,
+          "parametres": {"rendement_moyen": 0.05, "volatilite": 0.12, "frais_gestion": 0.009}
+        },
+        {
+          "identifiant": "STRUCT",
+          "libelle": "Autocall Euro Stoxx 50",
+          "type": "structure",
+          "allocation": 0.3,
+          "parametres": {
+            "sous_jacent": "Euro Stoxx 50",
+            "barriere_protection": 0.6,
+            "barriere_coupon": 0.7,
+            "niveau_coupon": 0.065,
+            "memoire": true,
+            "autocall": true,
+            "barriere_autocall": 1.0,
+            "maturite": 10,
+            "dates_observation": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "tendance_sous_jacent": 0.02,
+            "volatilite_sous_jacent": 0.20,
+            "mode_perte": "depuis_barriere",
+            "support_reinvestissement": "FE"
+          }
+        }
+      ],
+      "versements_programmes": [],
+      "versements_complementaires": [
+        {"montant": 50000, "date": "2028-06-01"}
+      ],
+      "rachats_programmes": [
+        {"pourcentage": 0.04, "periodicite": "annuelle", "date_debut": "2034-01-01"}
+      ]
+    },
+    {
+      "nom": "Exemple 3 : rente de complément par rachats programmés",
+      "montant_initial": 300000,
+      "duree_annees": 15,
+      "date_souscription": "2026-01-01",
+      "frais_versement": 0.0,
+      "situation_couple": false,
+      "primes_autres_contrats": 100000,
+      "supports": [
+        {
+          "identifiant": "FE",
+          "libelle": "Fonds en euros",
+          "type": "fonds_euros",
+          "allocation": 0.6,
+          "parametres": {"taux_base": 0.027, "tendance": "stable", "frais_gestion": 0.006}
+        },
+        {
+          "identifiant": "UC_OBLIG",
+          "libelle": "UC obligataire",
+          "type": "uc",
+          "allocation": 0.4,
+          "parametres": {"rendement_moyen": 0.035, "volatilite": 0.05, "frais_gestion": 0.009}
+        }
+      ],
+      "versements_programmes": [],
+      "versements_complementaires": [],
+      "rachats_programmes": [
+        {"montant": 1000, "periodicite": "mensuelle", "date_debut": "2027-01-01", "support_prelevement": "FE"}
+      ]
+    }
+  ]
+}
