@@ -874,7 +874,21 @@ function rendreRente() {
 // Exports
 // ---------------------------------------------------------------------------
 
-function telecharger(blob, nom) {
+async function telecharger(blob, nom) {
+  // Dans l'environnement claude.ai, l'enregistrement passe par la capacité « downloads ».
+  if (window.claude && typeof window.claude.use === 'function') {
+    try {
+      const downloads = await window.claude.use('downloads');
+      if (downloads) {
+        await downloads.save({ filename: nom, data: blob });
+        return;
+      }
+    } catch (e) {
+      if (e && e.code === 'declined') return;
+      toast(`Enregistrement impossible : ${e && e.message ? e.message : e}`);
+      return;
+    }
+  }
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -904,7 +918,7 @@ function exporterPDF() {
   const g = etat.graphiques['graph-valeur'];
   const image = g ? g.toBase64Image('image/png', 1) : null;
   const doc = construirePDF(etat.resultat, etat.config, image, jspdf.jsPDF, { conseiller: 'Synthèse de simulation' });
-  doc.save(nomFichier('pdf'));
+  telecharger(doc.output('blob'), nomFichier('pdf'));
   toast('Synthèse PDF générée.');
 }
 
