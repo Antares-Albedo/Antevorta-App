@@ -1,0 +1,13 @@
+{
+  "libelle": "Barème de rendement du fonds en euros selon la part d'unités de compte",
+  "exercice": 2025,
+  "seuilEncours": 150000,
+  "structuresAssimileesUC": true,
+  "tranches": [
+    { "libelle": "UC 70 % et plus", "partUCMin": 0.70, "tauxSousSeuil": 0.0400, "tauxAuDessusSeuil": 0.0425 },
+    { "libelle": "UC 60 % à 70 %", "partUCMin": 0.60, "tauxSousSeuil": 0.0375, "tauxAuDessusSeuil": 0.0400 },
+    { "libelle": "UC 50 % à 60 %", "partUCMin": 0.50, "tauxSousSeuil": 0.0325, "tauxAuDessusSeuil": 0.0350 },
+    { "libelle": "UC 40 % à 50 %", "partUCMin": 0.40, "tauxSousSeuil": 0.0200, "tauxAuDessusSeuil": 0.0225 },
+    { "libelle": "UC moins de 40 %", "partUCMin": 0.00, "tauxSousSeuil": 0.0110, "tauxAuDessusSeuil": 0.0110 }
+  ]
+}

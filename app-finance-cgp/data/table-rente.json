@@ -1,0 +1,29 @@
+{
+  "libelle": "Table indicative de conversion d'un capital en rente viagère annuelle",
+  "commentaire": "Taux de conversion = rente annuelle / capital, pour une rente simple. Valeurs indicatives à remplacer par la table de l'assureur.",
+  "tauxConversionParAge": [
+    { "age": 55, "taux": 0.031 },
+    { "age": 60, "taux": 0.035 },
+    { "age": 62, "taux": 0.037 },
+    { "age": 65, "taux": 0.040 },
+    { "age": 67, "taux": 0.043 },
+    { "age": 70, "taux": 0.047 },
+    { "age": 75, "taux": 0.056 },
+    { "age": 80, "taux": 0.068 },
+    { "age": 85, "taux": 0.084 }
+  ],
+  "coefficientsTypeRente": {
+    "simple": 1.00,
+    "reversible60": 0.86,
+    "reversible100": 0.78,
+    "annuitesGaranties10": 0.95,
+    "annuitesGaranties15": 0.91
+  },
+  "libellesTypeRente": {
+    "simple": "Rente simple",
+    "reversible60": "Réversible à 60 %",
+    "reversible100": "Réversible à 100 %",
+    "annuitesGaranties10": "10 annuités garanties",
+    "annuitesGaranties15": "15 annuités garanties"
+  }
+}

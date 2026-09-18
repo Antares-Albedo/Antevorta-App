@@ -1,0 +1,35 @@
+{
+  "libelle": "Paramètres fiscaux de l'assurance-vie en cas de vie",
+  "dateReference": "2026-09-18",
+  "prelevementsSociaux": {
+    "tauxAssuranceVie": 0.172,
+    "tauxAutresEnveloppes": 0.186,
+    "commentaire": "Le taux de 17,20 % reste applicable à l'assurance-vie ; le taux de 18,60 % applicable depuis 2026 concerne le PEA, le compte-titres, le PER et l'épargne salariale."
+  },
+  "dateBasculePFU": "2017-09-27",
+  "primesApres2017": {
+    "tauxMoins8Ans": 0.128,
+    "tauxPlus8AnsReduit": 0.075,
+    "tauxPlus8AnsPlein": 0.128,
+    "seuilPrimesTauxReduit": 150000,
+    "acompteMoins8Ans": 0.128,
+    "acomptePlus8Ans": 0.075
+  },
+  "primesAvant2017": {
+    "tauxMoins4Ans": 0.35,
+    "taux4a8Ans": 0.15,
+    "tauxPlus8Ans": 0.075
+  },
+  "abattementAnnuel": {
+    "dureeMinimale": 8,
+    "seul": 4600,
+    "couple": 9200
+  },
+  "avance": {
+    "quotiteFondsEuros": 0.80,
+    "quotiteUC": 0.60,
+    "tauxInteretDefaut": 0.03,
+    "dureeDefaut": 6,
+    "seuilAlerteDefaut": 0.70
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "exemples": [
+    {
+      "nom": "Exemple 1 : épargne équilibrée avec versements programmés",
+      "contrat": {
+        "nom": "Épargne équilibrée",
+        "montantInitial": 60000,
+        "dureeProjection": 12,
+        "anterioriteFiscale": 0,
+        "supports": [
+          { "id": "FE", "type": "fondsEuros", "libelle": "Fonds en euros", "allocation": 0.45 },
+          { "id": "UC", "type": "uc", "libelle": "UC actions internationales", "allocation": 0.55, "parametres": { "rendementMoyen": 0.06, "volatilite": 0.16 } }
+        ],
+        "versementsProgrammes": [{ "montant": 400, "periodicite": "mensuelle", "anneeDebut": 1, "indexation": 0.02 }],
+        "versementsComplementaires": [],
+        "rachatsProgrammes": []
+      },
+      "frais": { "versementInitial": 0.02, "versementsProgrammes": 0.015, "versementsComplementaires": 0.02, "arbitrage": 0.005, "gestionFondsEuros": 0.006, "gestionUC": 0.009 },
+      "scenario": { "tendance": "stable", "variationAnnuelle": 0, "tauxPlancher": 0.01 },
+      "arbitrages": { "reequilibrage": { "actif": true, "periodiciteAnnees": 1 } },
+      "avance": { "actif": false },
+      "fiscal": { "situation": "couple", "option": "forfaitaire", "tauxMarginal": 0.30, "revenuImposable": 80000 }
+    },
+    {
+      "nom": "Exemple 2 : dirigeant, produit structuré et avance",
+      "contrat": {
+        "nom": "Trésorerie dirigeant",
+        "montantInitial": 250000,
+        "dureeProjection": 10,
+        "anterioriteFiscale": 0,
+        "supports": [
+          { "id": "FE", "type": "fondsEuros", "libelle": "Fonds en euros", "allocation": 0.30 },
+          { "id": "UC", "type": "uc", "libelle": "UC diversifiée", "allocation": 0.40, "parametres": { "rendementMoyen": 0.05, "volatilite": 0.12 } },
+          { "id": "ST", "type": "structure", "libelle": "Autocall Euro Stoxx 50", "allocation": 0.30, "parametres": { "sousJacent": "Euro Stoxx 50", "barriereProtection": 0.6, "barriereCoupon": 0.7, "niveauCoupon": 0.065, "effetMemoire": true, "autocall": true, "barriereAutocall": 1.0, "maturite": 8, "tendanceSousJacent": -0.01, "volatiliteSousJacent": 0.2 } }
+        ],
+        "versementsProgrammes": [],
+        "versementsComplementaires": [{ "montant": 50000, "annee": 3 }],
+        "rachatsProgrammes": []
+      },
+      "frais": { "versementInitial": 0.01, "versementsProgrammes": 0.01, "versementsComplementaires": 0.01, "arbitrage": 0.005, "gestionFondsEuros": 0.006, "gestionUC": 0.009 },
+      "scenario": { "tendance": "stable", "variationAnnuelle": 0, "tauxPlancher": 0.01 },
+      "arbitrages": { "securisation": { "actif": true, "anneeDebut": 7, "partFondsEurosCible": 0.7, "courbe": "lineaire" } },
+      "avance": { "actif": true, "montant": 80000, "anneeMiseEnPlace": 4, "duree": 5, "tauxInteret": 0.03, "capitalisation": "composee", "remboursement": "inFine" },
+      "fiscal": { "situation": "couple", "option": "forfaitaire", "tauxMarginal": 0.41, "revenuImposable": 150000 }
+    },
+    {
+      "nom": "Exemple 3 : contrat ancien en phase de rachats programmés",
+      "contrat": {
+        "nom": "Complément de revenus",
+        "montantInitial": 0,
+        "dureeProjection": 15,
+        "anterioriteFiscale": 12,
+        "primesAnterieuresAvant2017": 180000,
+        "primesAnterieuresApres2017": 40000,
+        "gainsLatentsOuverture": 60000,
+        "gainsLatentsDejaSoumisPS": 25000,
+        "supports": [
+          { "id": "FE", "type": "fondsEuros", "libelle": "Fonds en euros", "allocation": 0.55 },
+          { "id": "UC", "type": "uc", "libelle": "UC obligataire et diversifiée", "allocation": 0.45, "parametres": { "rendementMoyen": 0.035, "volatilite": 0.06 } }
+        ],
+        "versementsProgrammes": [],
+        "versementsComplementaires": [],
+        "rachatsProgrammes": [{ "montant": 1200, "periodicite": "mensuelle", "anneeDebut": 1 }]
+      },
+      "frais": { "versementInitial": 0, "versementsProgrammes": 0, "versementsComplementaires": 0, "arbitrage": 0, "gestionFondsEuros": 0.006, "gestionUC": 0.009 },
+      "scenario": { "tendance": "baisse", "variationAnnuelle": 0.03, "tauxPlancher": 0.01 },
+      "arbitrages": { "reequilibrage": { "actif": true, "periodiciteAnnees": 2 } },
+      "avance": { "actif": false },
+      "fiscal": { "situation": "seul", "option": "bareme", "tauxMarginal": 0.11, "revenuImposable": 25000, "primesCumuleesAutresContrats": 0 }
+    }
+  ]
+}

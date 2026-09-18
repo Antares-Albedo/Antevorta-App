@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Simulateur Antevorta</title>
+  <meta name="description" content="Simulateur de projection de contrats d'assurance-vie et de capitalisation pour conseiller en gestion de patrimoine.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231e4e79'/%3E%3Cpath d='M7 23 L14 10 L19 19 L23 13 L26 23' fill='none' stroke='%23fff' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <header class="barre">
+    <div class="marque">
+      <div class="logo" aria-hidden="true">A</div>
+      <div>
+        <h1>Simulateur Antevorta</h1>
+        <small>Projection de contrats d'assurance-vie et de capitalisation</small>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn" id="btn-exemples" type="button">Charger un exemple</button>
+      <button class="btn" id="btn-importer" type="button">Importer</button>
+      <input type="file" id="fichier-import" accept="application/json" class="masque">
+      <button class="btn" id="btn-exporter-json" type="button">Enregistrer la configuration</button>
+      <button class="btn" id="btn-theme" type="button" aria-label="Changer de thème">Thème</button>
+    </div>
+  </header>
+
+  <div class="ruban" id="ruban" aria-live="polite"></div>
+
+  <div class="disposition">
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <main id="contenu">
+      <section class="panneau" data-section="contrat">
+        <div class="entete-section"><div><h2>Contrat</h2><p>Montant initial, durée de projection, antériorité fiscale et répartition entre supports. Les valeurs sont recalculées à chaque modification.</p></div></div>
+        <div class="carte" id="form-contrat"></div>
+        <div class="carte">
+          <h3>Supports et allocation <span class="aide">La somme des allocations doit valoir 100 %</span></h3>
+          <div id="allocation"></div>
+          <div class="liste" id="liste-supports"></div>
+          <div class="ajout" style="margin-top:12px">
+            <select id="type-nouveau-support">
+              <option value="fondsEuros">Fonds en euros</option>
+              <option value="uc">Unités de compte</option>
+              <option value="structure">Produit structuré</option>
+            </select>
+            <button class="btn" type="button" data-action="ajouter-support">Ajouter un support</button>
+          </div>
+        </div>
+        <div class="carte" id="form-reprise"></div>
+      </section>
+
+      <section class="panneau" data-section="flux">
+        <div class="entete-section"><div><h2>Flux</h2><p>Versements programmés, versements complémentaires et rachats programmés. Les années sont comptées depuis le début de la projection (année 1).</p></div></div>
+        <div class="carte">
+          <h3>Versements programmés</h3>
+          <div class="liste" id="liste-vp"></div>
+          <div class="ajout" style="margin-top:12px"><button class="btn" type="button" data-action="ajouter-vp">Ajouter un versement programmé</button></div>
+        </div>
+        <div class="carte">
+          <h3>Versements complémentaires</h3>
+          <div class="liste" id="liste-vc"></div>
+          <div class="ajout" style="margin-top:12px"><button class="btn" type="button" data-action="ajouter-vc">Ajouter un versement complémentaire</button></div>
+        </div>
+        <div class="carte">
+          <h3>Rachats programmés</h3>
+          <div class="liste" id="liste-rp"></div>
+          <div class="ajout" style="margin-top:12px"><button class="btn" type="button" data-action="ajouter-rp">Ajouter un rachat programmé</button></div>
+        </div>
+      </section>
+
+      <section class="panneau" data-section="frais">
+        <div class="entete-section"><div><h2>Frais</h2><p>Frais sur versement et d'arbitrage bornés de 0,00 % à 3,00 %. Les frais sur versement sont déduits avant investissement : seul le montant net alimente les supports.</p></div></div>
+        <div class="carte" id="form-frais"></div>
+      </section>
+
+      <section class="panneau" data-section="supports">
+        <div class="entete-section"><div><h2>Supports</h2><p>Barème du fonds en euros et règle d'évolution, rendement et volatilité des unités de compte, paramètres du produit structuré.</p></div></div>
+        <div class="carte" id="form-bareme"></div>
+        <div class="carte" id="form-scenario"></div>
+        <div class="carte" id="form-supports-detail"></div>
+      </section>
+
+      <section class="panneau" data-section="arbitrages">
+        <div class="entete-section"><div><h2>Arbitrages</h2><p>Arbitrages ponctuels, rééquilibrage périodique vers l'allocation cible et sécurisation progressive. Tout arbitrage modifie la part d'UC, donc le taux du fonds en euros : l'effet est visible dans le tableau annuel.</p></div></div>
+        <div class="carte">
+          <h3>Arbitrages ponctuels</h3>
+          <div class="liste" id="liste-arbitrages"></div>
+          <div class="ajout" style="margin-top:12px"><button class="btn" type="button" data-action="ajouter-arbitrage">Ajouter un arbitrage</button></div>
+        </div>
+        <div class="carte" id="form-arbitrages-auto"></div>
+      </section>
+
+      <section class="panneau" data-section="avance">
+        <div class="entete-section"><div><h2>Avance</h2><p>L'avance ne réduit pas l'assiette de rendement : le capital reste investi. Assiette disponible : 80 % du fonds en euros et 60 % des unités de compte.</p></div></div>
+        <div class="carte" id="form-avance"></div>
+        <div class="carte" id="assiette-avance"></div>
+      </section>
+
+      <section class="panneau" data-section="fiscalite">
+        <div class="entete-section"><div><h2>Fiscalité</h2><p>Fiscalité en cas de vie des rachats. La fiscalité en cas de décès est hors périmètre.</p></div></div>
+        <div class="carte" id="form-fiscal"></div>
+        <div class="carte" id="rappel-fiscal"></div>
+      </section>
+
+      <section class="panneau" data-section="resultats">
+        <div class="entete-section">
+          <div><h2>Résultats</h2><p>Tableau annuel, évolution de la valorisation, avance et fiscalité des rachats.</p></div>
+          <div class="ajout">
+            <button class="btn" type="button" id="btn-excel">Exporter Excel</button>
+            <button class="btn primaire" type="button" id="btn-pdf">Synthèse client PDF</button>
+          </div>
+        </div>
+        <div id="resultats-contenu"></div>
+      </section>
+
+      <section class="panneau" data-section="optimiseur">
+        <div class="entete-section"><div><h2>Optimiseur de part d'UC</h2><p>Rendement global du contrat en fonction de la part d'unités de compte, compte tenu du barème à paliers du fonds en euros.</p></div></div>
+        <div class="carte" id="form-optimiseur"></div>
+        <div id="optimiseur-contenu"></div>
+      </section>
+
+      <section class="panneau" data-section="comparateur">
+        <div class="entete-section"><div><h2>Comparateurs</h2><p>Avance contre rachat partiel pour un même besoin de liquidité, et scénarios côte à côte sur les mêmes flux.</p></div></div>
+        <div class="carte" id="form-comparateur-avance"></div>
+        <div id="comparateur-avance-contenu"></div>
+        <div class="carte" id="form-comparateur-scenarios"></div>
+        <div id="comparateur-scenarios-contenu"></div>
+      </section>
+
+      <section class="panneau" data-section="rente">
+        <div class="entete-section"><div><h2>Sortie en rente et consommation du capital</h2><p>Conversion du capital au terme en rente viagère, ou phase de consommation par rachats programmés avec projection de l'épuisement du capital.</p></div></div>
+        <div class="carte" id="form-rente"></div>
+        <div id="rente-contenu"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="pied">Simulation à caractère indicatif et non contractuel. Les performances passées ne préjugent pas des performances à venir. Barèmes et taux lus dans le dossier data, à actualiser à chaque révision de l'assureur ou loi de finances.</footer>
+
+  <dialog id="dialogue-exemples">
+    <h3>Charger un exemple</h3>
+    <p class="note">Exemples génériques, sans donnée client. Le contrat courant sera remplacé.</p>
+    <div class="liste-exemples" id="liste-exemples"></div>
+    <div class="ajout"><button class="btn" type="button" id="btn-fermer-exemples">Fermer</button></div>
+  </dialog>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

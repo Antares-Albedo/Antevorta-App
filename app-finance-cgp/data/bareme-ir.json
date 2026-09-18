@@ -1,0 +1,13 @@
+{
+  "libelle": "Barème progressif de l'impôt sur le revenu",
+  "anneeRevenus": 2025,
+  "commentaire": "Tranches par part de quotient familial. À actualiser à chaque loi de finances.",
+  "partsParSituation": { "seul": 1, "couple": 2 },
+  "tranches": [
+    { "jusqua": 11497, "taux": 0.00 },
+    { "jusqua": 29315, "taux": 0.11 },
+    { "jusqua": 83823, "taux": 0.30 },
+    { "jusqua": 180294, "taux": 0.41 },
+    { "jusqua": null, "taux": 0.45 }
+  ]
+}

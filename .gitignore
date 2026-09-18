@@ -5,3 +5,5 @@ __pycache__/
 *.xlsx
 *.pdf
 .streamlit/secrets.toml
+app-finance-cgp/vendor/
+node_modules/
