@@ -35,6 +35,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Préparation du site (racine du dépôt, sans le simulateur Python ni les tests)
         run: |
           mkdir -p _site
