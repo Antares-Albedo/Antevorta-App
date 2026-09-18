@@ -3,7 +3,6 @@ name: Déploiement GitHub Pages
 on:
   push:
     branches: [claude/new-session-9tda09, main]
-    paths: ['app-finance-cgp/**', '.github/workflows/pages.yml']
   workflow_dispatch:
 
 permissions:
@@ -36,8 +35,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Préparation du site (racine du dépôt, sans le simulateur Python ni les tests)
+        run: |
+          mkdir -p _site
+          cp index.html .nojekyll _site/
+          cp -r app-finance-cgp _site/
+          rm -rf _site/app-finance-cgp/tests _site/app-finance-cgp/vendor
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: app-finance-cgp
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
